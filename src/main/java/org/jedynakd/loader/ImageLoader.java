@@ -1,3 +1,7 @@
+package org.jedynakd.loader;
+
+import org.jedynakd.data.Image;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;

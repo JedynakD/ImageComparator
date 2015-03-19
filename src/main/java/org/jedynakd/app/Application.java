@@ -1,3 +1,10 @@
+package org.jedynakd.app;
+
+import org.jedynakd.comparator.ImageComparator;
+import org.jedynakd.data.Image;
+import org.jedynakd.loader.ImageLoader;
+import org.jedynakd.saver.ImageSaver;
+
 public class Application {
     public static void main(String[] args) {
         ImageLoader loaderOne = new ImageLoader();

@@ -1,3 +1,7 @@
+package org.jedynakd.comparator;
+
+import org.jedynakd.data.Image;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
