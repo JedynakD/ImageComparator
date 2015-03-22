@@ -10,17 +10,18 @@ import java.util.List;
 public class ImageComparator {
     private final static int maximumRGBValue = 16777216;
     private final static int maximumRGBComponentValue = 255;
-    private Image comparedImage;
 
-    public void compareImages(Image imageOne, Image imageTwo) {
+    public Image compare(Image imageOne, Image imageTwo) {
+        Image comparedImage;
         if (imageOne.getImage().getWidth() >= imageTwo.getImage().getWidth()) {
-            imageTwo = returnResizedImage(imageTwo, imageOne);
+            imageTwo = getResizedImage(imageTwo, imageOne);
+            comparedImage = imageTwo;
         } else {
-            imageOne = returnResizedImage(imageOne, imageTwo);
+            imageOne = getResizedImage(imageOne, imageTwo);
+            comparedImage = imageOne;
         }
         List<Integer> imageOneRGBValues = imageOne.getImageRGBValueOfPixels();
         List<Integer> imageTwoRGBValues = imageTwo.getImageRGBValueOfPixels();
-        comparedImage = imageOne;
         Iterator<Integer> valueOne = imageOneRGBValues.iterator();
         Iterator<Integer> valueTwo = imageTwoRGBValues.iterator();
         int imageOneRGBValue;
@@ -38,9 +39,10 @@ public class ImageComparator {
                 }
             }
         }
+        return comparedImage;
     }
 
-    private Image returnResizedImage(Image original, Image imageWithParametersToResize) {
+    private Image getResizedImage(Image original, Image imageWithParametersToResize) {
         int width = imageWithParametersToResize.getImage().getWidth();
         int height = imageWithParametersToResize.getImage().getHeight();
         int type = imageWithParametersToResize.getImage().getType();
@@ -49,9 +51,5 @@ public class ImageComparator {
         g.drawImage(original.getImage(), 0, 0, width, height, null);
         g.dispose();
         return new Image(resizedImage);
-    }
-
-    public Image getComparedImage() {
-        return comparedImage;
     }
 }

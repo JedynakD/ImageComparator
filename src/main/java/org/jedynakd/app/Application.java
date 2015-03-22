@@ -12,9 +12,8 @@ public class Application {
         ImageLoader loaderTwo = new ImageLoader();
         Image imageTwo = loaderTwo.loadImageFromFile("images/test2");
         ImageComparator imageComparator = new ImageComparator();
-        imageComparator.compareImages(imageOne, imageTwo);
-        Image comparedImage = imageComparator.getComparedImage();
-        ImageSaver saver = new ImageSaver(comparedImage);
-        saver.saveImageToFile("images/result");
+        Image comparedImage = imageComparator.compare(imageOne, imageTwo);
+        ImageSaver saver = new ImageSaver();
+        saver.saveImageToFile("images/result", comparedImage);
     }
 }
