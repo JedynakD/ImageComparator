@@ -16,8 +16,6 @@ public class ApplicationTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-
-
     @Test
     public void shouldCompareTwoImagesAndSaveResult() throws IOException {
         Application.main("src/test/resources/test1.png", "src/test/resources/test2.png");
