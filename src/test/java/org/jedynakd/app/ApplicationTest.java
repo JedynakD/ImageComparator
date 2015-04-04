@@ -20,7 +20,7 @@ public class ApplicationTest {
     public void shouldCompareTwoImagesAndSaveResult() throws IOException {
         Application.main("src/test/resources/test1.png", "src/test/resources/test2.png");
 
-        File result = new File("result.png");
+        File result = new File(RESULT_FILE);
         assertThat(result).exists();
         File expectedResult = new File("src/test/resources/expectedResult.png");
         assertThat(result).hasContentEqualTo(expectedResult);
