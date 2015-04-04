@@ -1,6 +1,6 @@
 package org.jedynakd.comparator;
 
-import org.jedynakd.data.Image;
+import org.jedynakd.util.ImageUtility;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,48 +8,50 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ImageComparator {
-    private final static int maximumRGBValue = 16777216;
-    private final static int maximumRGBComponentValue = 255;
+    private final static int MAXIMUM_RGB_VALUE = 16777216;
+    private final static int MAXIMUM_RGB_COMPONENT_VALUE = 255;
+    private final ImageUtility imageUtility;
 
-    public Image compare(Image imageOne, Image imageTwo) {
-        Image comparedImage;
-        if (imageOne.getImage().getWidth() >= imageTwo.getImage().getWidth()) {
+    public ImageComparator(ImageUtility imageUtility) {
+        this.imageUtility = imageUtility;
+    }
+
+    public BufferedImage compare(BufferedImage imageOne, BufferedImage imageTwo) {
+        BufferedImage comparedImage;
+        if (imageOne.getWidth() >= imageTwo.getWidth()) {
             imageTwo = getResizedImage(imageTwo, imageOne);
             comparedImage = imageTwo;
         } else {
             imageOne = getResizedImage(imageOne, imageTwo);
             comparedImage = imageOne;
         }
-        List<Integer> imageOneRGBValues = imageOne.getImageRGBValueOfPixels();
-        List<Integer> imageTwoRGBValues = imageTwo.getImageRGBValueOfPixels();
+        List<Integer> imageOneRGBValues = imageUtility.getImageRGBValueOfPixels(imageOne);
+        List<Integer> imageTwoRGBValues = imageUtility.getImageRGBValueOfPixels(imageTwo);
         Iterator<Integer> valueOne = imageOneRGBValues.iterator();
         Iterator<Integer> valueTwo = imageTwoRGBValues.iterator();
-        int imageOneRGBValue;
-        int imageTwoRGBValue;
-        int differenceInRGB;
-        int linearDifferenceInRGBValues;
-        for (int height = 0; height < comparedImage.getImage().getHeight(); height++) {
-            for (int width = 0; width < comparedImage.getImage().getWidth(); width++) {
+
+        for (int height = 0; height < comparedImage.getHeight(); height++) {
+            for (int width = 0; width < comparedImage.getWidth(); width++) {
                 if (valueOne.hasNext() && valueTwo.hasNext()) {
-                    imageOneRGBValue = Math.abs(valueOne.next());
-                    imageTwoRGBValue = Math.abs(valueTwo.next());
-                    differenceInRGB = Math.abs(imageOneRGBValue - imageTwoRGBValue);
-                    linearDifferenceInRGBValues = maximumRGBComponentValue - (differenceInRGB / (maximumRGBValue / maximumRGBComponentValue));
-                    comparedImage.getImage().setRGB(width, height, new Color(linearDifferenceInRGBValues, linearDifferenceInRGBValues, linearDifferenceInRGBValues).getRGB());
+                    int imageOneRGBValue = Math.abs(valueOne.next());
+                    int imageTwoRGBValue = Math.abs(valueTwo.next());
+                    int differenceInRGB = Math.abs(imageOneRGBValue - imageTwoRGBValue);
+                    int linearDifferenceInRGBValues = MAXIMUM_RGB_COMPONENT_VALUE - (differenceInRGB / (MAXIMUM_RGB_VALUE / MAXIMUM_RGB_COMPONENT_VALUE));
+                    comparedImage.setRGB(width, height, new Color(linearDifferenceInRGBValues, linearDifferenceInRGBValues, linearDifferenceInRGBValues).getRGB());
                 }
             }
         }
         return comparedImage;
     }
 
-    private Image getResizedImage(Image original, Image imageWithParametersToResize) {
-        int width = imageWithParametersToResize.getImage().getWidth();
-        int height = imageWithParametersToResize.getImage().getHeight();
-        int type = imageWithParametersToResize.getImage().getType();
+    private BufferedImage getResizedImage(BufferedImage original, BufferedImage imageWithParametersToResize) {
+        int width = imageWithParametersToResize.getWidth();
+        int height = imageWithParametersToResize.getHeight();
+        int type = imageWithParametersToResize.getType();
         BufferedImage resizedImage = new BufferedImage(width, height, type);
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(original.getImage(), 0, 0, width, height, null);
+        g.drawImage(original, 0, 0, width, height, null);
         g.dispose();
-        return new Image(resizedImage);
+        return resizedImage;
     }
 }

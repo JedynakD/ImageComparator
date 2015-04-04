@@ -1,17 +1,12 @@
-package org.jedynakd.data;
+package org.jedynakd.util;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Image {
-    private BufferedImage image;
+public class ImageUtility {
 
-    public Image(BufferedImage image) {
-        this.image = image;
-    }
-
-    public List<Integer> getImageRGBValueOfPixels() {
+    public List<Integer> getImageRGBValueOfPixels(BufferedImage image) {
         List<Integer> pixels = new ArrayList<>();
         for (int height = 0; height < image.getHeight(); height++) {
             for (int width = 0; width < image.getWidth(); width++) {
@@ -21,7 +16,4 @@ public class Image {
         return pixels;
     }
 
-    public BufferedImage getImage() {
-        return image;
-    }
 }
